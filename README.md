@@ -34,4 +34,4 @@ The project demonstrates three distinct data-exfiltration approaches:
 - Python 3.8+
 
 ```bash
-pip install requests
+pip install -r requirements.txt
